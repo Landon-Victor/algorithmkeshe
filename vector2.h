@@ -15,6 +15,9 @@ public:
 	Vector2(float x, float y)
 		:x(x), y(y) {
 	}
+	Vector2(int x, int y)
+		:x(static_cast<float>(x)), y(static_cast<float>(y)) {
+	}
 
 	Vector2 operator+(const Vector2& vec) const
 	{

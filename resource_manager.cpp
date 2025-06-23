@@ -22,6 +22,9 @@ static const std::vector<ImageResInfo> image_info_list =
 	{"button_startgame_1",                _T(R"(resources\ui\button_startgame_1.png)")},
 	{"button_startgame_2",                _T(R"(resources\ui\button_startgame_2.png)")},
 	{"button_startgame_3",                _T(R"(resources\ui\button_startgame_3.png)")},
+	{"player_idle_right",                 _T(R"(resources\player_idle_right.png)")},
+	{"player_run_right",                  _T(R"(resources\player_run_right.png)")},
+	{"wall",                              _T(R"(resources\wall.png)")},
 };
 
 static inline bool check_image_valid(IMAGE* image)
@@ -41,6 +44,8 @@ void ResourcesManager::load()
 			throw info.path;
 		image_pool[info.id] = image;
 	}
+	flip_image("player_idle_right", "player_idle_left", 5);
+	flip_image("player_run_right", "player_run_left", 10);
 }
 
 ResourcesManager* ResourcesManager::manager = nullptr;

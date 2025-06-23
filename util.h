@@ -90,4 +90,3 @@ inline std::wstring get_current_time()
 		st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond);
 	return buf;
 }
-

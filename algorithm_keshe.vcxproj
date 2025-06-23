@@ -123,16 +123,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="button.cpp" />
+    <ClCompile Include="collision_manager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="resource_manager.cpp" />
     <ClCompile Include="scene_manager.cpp" />
+    <ClCompile Include="textbox.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="animation.h" />
     <ClInclude Include="atlas.h" />
+    <ClInclude Include="button.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="collision_box.h" />
+    <ClInclude Include="collision_manager.h" />
+    <ClInclude Include="game_scene.h" />
     <ClInclude Include="hello_scene.h" />
+    <ClInclude Include="map_generator.h" />
+    <ClInclude Include="object.h" />
     <ClInclude Include="resources_manager.h" />
     <ClInclude Include="scene_manager.h" />
+    <ClInclude Include="static_image.h" />
+    <ClInclude Include="textbox.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="util.h" />
     <ClInclude Include="vector2.h" />
