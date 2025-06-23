@@ -19,6 +19,9 @@ struct AtlasResInfo
 static const std::vector<ImageResInfo> image_info_list =
 {
 	{"background",                        _T(R"(resources\background.png)")},
+	{"button_startgame_1",                _T(R"(resources\ui\button_startgame_1.png)")},
+	{"button_startgame_2",                _T(R"(resources\ui\button_startgame_2.png)")},
+	{"button_startgame_3",                _T(R"(resources\ui\button_startgame_3.png)")},
 };
 
 static inline bool check_image_valid(IMAGE* image)

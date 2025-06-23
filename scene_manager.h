@@ -1,5 +1,5 @@
 #pragma once
-
+#include <graphics.h>
 #include <iostream>
 #include "camera.h"
 
@@ -33,7 +33,8 @@ public:
 	{
 		Login,
 		Register,
-		Hello
+		Hello,
+		Game
 	};
 
 	static SceneManager* instance();
@@ -62,4 +63,5 @@ private:
 	Scene* login_scene = nullptr;
 	Scene* register_scene = nullptr;
 	Scene* hello_scene = nullptr;
+	Scene* game_scene = nullptr;
 };
