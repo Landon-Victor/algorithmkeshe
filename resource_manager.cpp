@@ -25,6 +25,7 @@ static const std::vector<ImageResInfo> image_info_list =
 	{"player_idle_right",                 _T(R"(resources\player_idle_right.png)")},
 	{"player_run_right",                  _T(R"(resources\player_run_right.png)")},
 	{"wall",                              _T(R"(resources\wall.png)")},
+	{"dilao",                             _T(R"(resources\dilao.png)")},
 };
 
 static inline bool check_image_valid(IMAGE* image)

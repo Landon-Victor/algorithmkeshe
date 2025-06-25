@@ -33,6 +33,9 @@
     <ClCompile Include="collision_manager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="map_generator.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="util.h">

@@ -22,7 +22,7 @@ public:
 		startgame.on_update(delta);
 	}
 	void on_render(const Camera& camera) {
-		startgame.on_render(camera);
+		startgame.on_render();
 	}
 	void on_input(const ExMessage& message) {
 		startgame.on_input(message);

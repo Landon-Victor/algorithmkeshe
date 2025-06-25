@@ -126,6 +126,7 @@
     <ClCompile Include="button.cpp" />
     <ClCompile Include="collision_manager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="map_generator.cpp" />
     <ClCompile Include="resource_manager.cpp" />
     <ClCompile Include="scene_manager.cpp" />
     <ClCompile Include="textbox.cpp" />

@@ -17,7 +17,7 @@ public:
 	Atlas* find_atlas(const std::string& id) const;
 	IMAGE* find_image(const std::string& id) const;
 
-	Camera* get_camera() const
+	Camera* get_camera()
 	{
 		return main_camera;
 	}

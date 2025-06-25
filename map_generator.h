@@ -1,42 +1,37 @@
 #pragma once
 #include <vector>
+#include <string>
+#include "vector2.h"
+
 enum class Content
 {
 	none,
 	wall,
-	role,
 	start,
-	exit
+	exit,
+	trap,
+	locker,
+	boss,
+	money
 };
 typedef std::vector<std::vector<Content>> Map;
 class MapGenerator
 {
 public:
-	std::vector<std::vector<Content>> get_a_map()
+	 Map get_a_map(int size)
 	{
-		Map map;
-		map.resize(10, std::vector<Content>(10, Content::none));
-		map[0][0] = Content::start;
-		map[9][9] = Content::exit;
-		for (int i = 0; i < 10; ++i)
-		{
-			map[i][0] = Content::wall;
-		}
-		for(int i = 0; i < 10; ++i)
-		{
-			map[i][9] = Content::wall;
-		}
-		for(int i = 0; i < 10; ++i)
-		{
-			map[0][i] = Content::wall;
-		}
-		for(int i = 0; i < 10; ++i)
-		{
-			map[9][i] = Content::wall;
-		}
-		map[5][5] = Content::role;
+		divide_conquer_main(size);
+		save_map(L"map.csv");
 		return map;
 	}
+	void save_map(const std::wstring& filename);
 	MapGenerator() = default;
 	~MapGenerator() = default;
+private:
+	void divide_conquer_main(int size);
+	void divide_conquer(int row_start,int row_end,int col_start, int col_end);
+	void bfs_traverse(const Vector2 &start);
+private:
+	Map map;
+	std::vector<Vector2> path;
 };

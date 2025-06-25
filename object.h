@@ -4,6 +4,7 @@
 #include "static_image.h"
 #include "camera.h"
 #include "animation.h"
+const int OBJECT_SIZE = 90;
 class Object
 {
 public:
@@ -33,16 +34,16 @@ public:
 	Wall() = default;
 	Wall(int x, int y)
 	{
-		logic_pos = Vector2(x, y);
-		real_pos = Vector2(x * 50, y * 50);
+		logic_pos = Vector2(y, x);
+		real_pos = Vector2(y * OBJECT_SIZE, x * OBJECT_SIZE);
 		collision_box->set_enabled(true);
-		collision_box->set_position(Vector2(real_pos.x+25,real_pos.y+25));
-		collision_box->set_size(Vector2(50, 50));
+		collision_box->set_position(Vector2(real_pos.x+OBJECT_SIZE/2,real_pos.y+OBJECT_SIZE/2));
+		collision_box->set_size(Vector2(OBJECT_SIZE, OBJECT_SIZE));
 		collision_box->set_layer_dst(CollisionLayer::Role);
 		collision_box->set_layer_src(CollisionLayer::None);
 		image.set_image("wall");
 		image.set_position(real_pos);
-		image.set_size(Vector2(50, 50));
+		image.set_size(Vector2(OBJECT_SIZE, OBJECT_SIZE));
 	}
 	~Wall() {}
 	void on_render(const Camera& camera) override
@@ -58,12 +59,12 @@ public:
 	{
 		collision_box = CollisionManager::instance()->create_collision_box();
 		collision_box->set_enabled(true);
-		collision_box->set_size(Vector2(50, 50));
+		collision_box->set_size(Vector2(OBJECT_SIZE-30, OBJECT_SIZE-30));
 		collision_box->set_layer_dst(CollisionLayer::None);
 		collision_box->set_layer_src(CollisionLayer::Role);
         collision_box->set_on_collide([&]() {  
             real_pos = old_real_pos;  
-            collision_box->set_position(Vector2(real_pos.x, real_pos.y - 25));
+            collision_box->set_position(Vector2(real_pos.x, real_pos.y - OBJECT_SIZE/2));
         });
 
 		player_idle_left.add_frame(ResourcesManager::instance()->find_image("player_idle_left"),5);
@@ -84,12 +85,17 @@ public:
 		player_run_right.set_loop(true);
 		current_animation = &player_idle_right;
 	}
+	const Vector2& get_position()
+	{
+		return real_pos;
+	}
+
 	void set_position(const Vector2& pos)
 	{
-		logic_pos = pos;
-		real_pos = Vector2(pos.x * 50, pos.y * 50);
+		logic_pos = Vector2(pos.y,pos.x);
+		real_pos = Vector2((pos.y +0.5)* OBJECT_SIZE, pos.x * OBJECT_SIZE+OBJECT_SIZE);
 		old_real_pos = real_pos;
-		collision_box->set_position(Vector2(real_pos.x, real_pos.y - 25));
+		collision_box->set_position(Vector2(real_pos.x, real_pos.y-OBJECT_SIZE/2));
 	}
 	~Player() {
 		if (collision_box != nullptr)
@@ -166,7 +172,7 @@ public:
 			current_animation = is_facing_right ? &player_idle_right : &player_idle_left;
 		}
 		current_animation->on_update(delta);
-		collision_box->set_position(Vector2(real_pos.x, real_pos.y - 25));
+		collision_box->set_position(Vector2(real_pos.x, real_pos.y -OBJECT_SIZE/2));
 		CollisionManager::instance()->process_collide();
 	}
 	void on_render(const Camera& camera)

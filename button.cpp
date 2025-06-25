@@ -22,8 +22,13 @@ void Button::set_image(std::string button_name)
 
 void Button::on_render(const Camera& camera)
 {
+	int start_x = camera.get_position().x ;
+	int start_y = camera.get_position().y;
+	int end_x = start_x + camera.get_camera_width();
+	int end_y = start_y + camera.get_camera_width();
 	Rect rect_dst = { x, y, w, h };
-
+	if( x < start_x || y < start_y || x + w > end_x || y + h > end_y)
+		return; 
 	switch (state)
 	{
 	case State::IDLE:
@@ -37,6 +42,23 @@ void Button::on_render(const Camera& camera)
 		break;
 	}
 
+}
+
+void Button::on_render()
+{
+	Rect rect_dst = { x, y, w, h };
+	switch (state)
+	{
+	case State::IDLE:
+		putimage_alpha(&idle, &rect_dst);
+		break;
+	case State::HOVER:
+		putimage_alpha(&hover, &rect_dst);
+		break;
+	case State::PRESS:
+		putimage_alpha(&press, &rect_dst);
+		break;
+	}
 }
 
 void Button::on_input(const ExMessage& msg)

@@ -11,13 +11,13 @@
 void put_background()
 {
 	IMAGE* img = ResourcesManager::instance()->find_image("background");
-	Camera* camera = ResourcesManager::instance()->get_camera();
 	Rect rect_dst = { 0,0,800,640 };
-	putimage_alpha(camera, img, &rect_dst);
+	putimage_alpha(img, &rect_dst);
 }
 
 int main()
 {
+	std::srand(static_cast<unsigned int>(std::time(nullptr)));
 	HWND hwnd = initgraph(800, 640, EW_SHOWCONSOLE);
 	SetWindowText(hwnd, _T("Hollow Katana"));
 

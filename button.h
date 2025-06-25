@@ -28,6 +28,7 @@ public:
     void set_image(std::string button_name);
 
     void on_render(const Camera& camera);
+    void on_render();
 
     void on_input(const ExMessage& msg);
 

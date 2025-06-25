@@ -112,6 +112,13 @@ public:
 
 	void on_render(Camera camera, int magnification_factor = 1)
 	{
+		int start_x = camera.get_position().x;
+		int start_y = camera.get_position().y;
+		int end_x = start_x + camera.get_camera_width();
+		int end_y = start_y + camera.get_camera_width();
+		if (position.x < start_x || position.x > end_x ||
+			position.y < start_y || position.y > end_y)
+			return; 
 		const Frame& frame = frame_list[idx_frame];
 
 		Rect rect_dst;
@@ -121,6 +128,19 @@ public:
 		rect_dst.w = frame.rect_src.w * magnification_factor, rect_dst.h = frame.rect_src.h * magnification_factor;
 
 		putimage_alpha(&camera, frame.image, &rect_dst, &frame.rect_src);
+	}
+
+	void on_render(int magnification_factor = 1)
+	{
+		const Frame& frame = frame_list[idx_frame];
+
+		Rect rect_dst;
+		rect_dst.x = (int)position.x - frame.rect_src.w / 2;
+		rect_dst.y = (anchor_mode == AnchorMode::Centered)
+			? (int)position.y - frame.rect_src.h / 2 : (int)position.y - frame.rect_src.h;
+		rect_dst.w = frame.rect_src.w * magnification_factor, rect_dst.h = frame.rect_src.h * magnification_factor;
+
+		putimage_alpha(frame.image, &rect_dst, &frame.rect_src);
 	}
 
 

@@ -46,6 +46,14 @@ inline void putimage_alpha(const Camera* camera, IMAGE* img, const Rect* rect_ds
 
 }
 
+inline void putimage_alpha(IMAGE* img, const Rect* rect_dst, const Rect* rect_src = nullptr)
+{
+	static BLENDFUNCTION blend_func = { AC_SRC_OVER,0,255,AC_SRC_ALPHA };
+	AlphaBlend(GetImageHDC(GetWorkingImage()), rect_dst->x, rect_dst->y, rect_dst->w, rect_dst->h,
+		GetImageHDC(img), rect_src ? rect_src->x : 0, rect_src ? rect_src->y : 0,
+		rect_src ? rect_src->w : img->getwidth(), rect_src ? rect_src->h : img->getheight(), blend_func);
+}
+
 inline void line(const Camera& camera, int x1, int y1, int x2, int y2)
 {
 	const Vector2& pos_camera = camera.get_position();

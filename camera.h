@@ -17,9 +17,19 @@ public:
 	}
 	~Camera() = default;
 
-	const Vector2& get_position() const
+	const Vector2& get_position()const
 	{
 		return position;
+	}
+
+	void set_position(const Vector2& pos)
+	{
+		position = pos;
+	}
+
+	const int get_camera_width() const
+	{
+		return camera_width;
 	}
 
 	void reset()
@@ -53,4 +63,5 @@ private:
 	Timer timer_shake;
 	bool is_shaking = false;
 	float shaking_strength = 0;
+	int camera_width = 640;
 };
