@@ -2,6 +2,9 @@
 #include <fstream>
 #include <locale>
 #include <codecvt>
+#include <algorithm> 
+#include <iostream>
+
 #include "map_generator.h"
 #include "vector2.h"
 
@@ -68,7 +71,78 @@ void MapGenerator::divide_conquer_main(int size)
 	//广度优先遍历选取出口
 	bfs_traverse(b);
 
-	//在迷宫单元随机生成资源，陷阱，机关
+	// 统计可用单元格
+	std::vector<Vector2> available_cells;
+	for (int i = 1; i < 2 * size; i += 2)
+	{
+		for (int j = 1; j < 2 * size; j += 2)
+		{
+			if (map[i][j] == Content::none)
+				available_cells.push_back(Vector2(i, j));
+		}
+	}
+
+	// 随机分配陷阱，保证至少3个
+	std::vector<int> idxs(available_cells.size());
+	for (int i = 0; i < idxs.size(); ++i) idxs[i] = i;
+	std::random_shuffle(idxs.begin(), idxs.end());
+	int trap_cnt = 0;
+	for (int k = 0; k < idxs.size() && trap_cnt < 3; ++k) {
+		Vector2& v = available_cells[idxs[k]];
+		map[(int)v.x][(int)v.y] = Content::trap;
+		trap_cnt++;
+	}
+	// 随机分配资源，保证至少10个
+	int money_cnt = 0;
+	for (int k = trap_cnt; k < idxs.size() && money_cnt < 10; ++k) {
+		Vector2& v = available_cells[idxs[k]];
+		if (map[(int)v.x][(int)v.y] == Content::none) {
+			map[(int)v.x][(int)v.y] = Content::money;
+			money_cnt++;
+		}
+	}
+	int locker_cnt = 0;
+	// 其余格子按原概率分配
+	for (int k = trap_cnt + money_cnt; k < idxs.size(); ++k) {
+		Vector2& v = available_cells[idxs[k]];
+		if (map[(int)v.x][(int)v.y] == Content::none) {
+			int r = rand() % 100;
+			if (r < 3) {
+				map[(int)v.x][(int)v.y] = Content::trap;
+				trap_cnt++;
+			}
+			else if (r < 6) {
+				map[(int)v.x][(int)v.y] = Content::locker;
+				locker_cnt++;
+			}
+			else if (r < 10) {
+				map[(int)v.x][(int)v.y] = Content::money;
+				money_cnt++;
+			}
+		}
+	}
+
+	// path上随机一个格子放机关
+	std::vector<Vector2> path_cells;
+	for (auto& v : path) {
+		int x = (int)v.x, y = (int)v.y;
+		if (map[x][y] == Content::none)
+			path_cells.push_back(v);
+	}
+	if (!path_cells.empty()) {
+		int idx = rand() % path_cells.size();
+		Vector2& v = path_cells[idx];
+		map[(int)v.x][(int)v.y] = Content::locker;
+		locker_cnt++;
+	}
+	std::cout << "生成的地图大小: " << map.size()<<std::endl;
+	std::cout << "入口位置: " << b.x << ", " << b.y << std::endl;
+	std::cout << "出口位置: " << path.back().x << ", " << path.back().y << std::endl;
+	std::cout << "路径长度: " << path.size() << std::endl;
+	std::cout << "陷阱数量: " << trap_cnt<< std::endl;
+	std::cout << "金币数量: " <<money_cnt<< std::endl;
+	std::cout << "机关数量: " << locker_cnt << std::endl;
+	std::cout << "Boss位置: " << path[path.size() - 2].x << ", " << path[path.size() - 2].y << std::endl;
 }
 
 void MapGenerator::divide_conquer(int row_start, int row_end, int col_start, int col_end)

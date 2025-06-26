@@ -11,14 +11,14 @@
 void put_background()
 {
 	IMAGE* img = ResourcesManager::instance()->find_image("background");
-	Rect rect_dst = { 0,0,800,640 };
+	Rect rect_dst = { 0,0,880,640 };
 	putimage_alpha(img, &rect_dst);
 }
 
 int main()
 {
 	std::srand(static_cast<unsigned int>(std::time(nullptr)));
-	HWND hwnd = initgraph(800, 640, EW_SHOWCONSOLE);
+	HWND hwnd = initgraph(880, 640, EW_SHOWCONSOLE);
 	SetWindowText(hwnd, _T("Hollow Katana"));
 
 	try
@@ -38,7 +38,7 @@ int main()
 
 	bool running = true;
 
-	initgraph(800, 640);
+	initgraph(880, 640);
 
 	BeginBatchDraw();
 

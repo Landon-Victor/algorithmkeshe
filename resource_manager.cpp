@@ -26,6 +26,18 @@ static const std::vector<ImageResInfo> image_info_list =
 	{"player_run_right",                  _T(R"(resources\player_run_right.png)")},
 	{"wall",                              _T(R"(resources\wall.png)")},
 	{"dilao",                             _T(R"(resources\dilao.png)")},
+	{"cover",                             _T(R"(resources\cover.png)")},
+	{"boss_idle_left",                    _T(R"(resources\boss_idle_left.png)")},
+	{"wall1",                             _T(R"(resources\wall1.png)")},
+	{"wall2",                             _T(R"(resources\wall2.png)")},
+	{"wall3",                             _T(R"(resources\wall3.png)")},
+	{"wall4",                             _T(R"(resources\wall4.png)")},
+	{"start",  					          _T(R"(resources\start.png)")},
+	{"exit",                              _T(R"(resources\exit.png)")},
+	{"locker",						      _T(R"(resources\locker.png)")},
+	{"path",                              _T(R"(resources\path.png)")},
+	{"money",							  _T(R"(resources\money.png)")},
+	{"trap",							  _T(R"(resources\trap.png)")},
 };
 
 static inline bool check_image_valid(IMAGE* image)

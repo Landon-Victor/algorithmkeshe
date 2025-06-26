@@ -9,6 +9,7 @@ enum class CollisionLayer
 	None,
 	Role,
 	Wall,
+	OOO
 };
 
 class CollisionManager;

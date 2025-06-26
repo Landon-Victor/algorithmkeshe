@@ -15,8 +15,8 @@ public:
 		int start_y = camera.get_position().y;
 		int end_x = start_x + camera.get_camera_width();
 		int end_y = start_y + camera.get_camera_width();
-		if (position.x < start_x || position.x+size.x > end_x || position.y < start_y || position.y+size.y > end_y)
-			return; // Outside camera view, no need to render
+		if (position.x+size.x < start_x || position.x > end_x || position.y +size.y< start_y || position.y > end_y)
+			return; 
 		if (img)
 		{
 			Rect rect_dst = { (int)position.x,(int)position.y, (int)size.x,(int)size.y };

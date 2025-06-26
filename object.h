@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include "collision_manager.h"
 #include "collision_box.h"
 #include "static_image.h"
@@ -41,11 +42,193 @@ public:
 		collision_box->set_size(Vector2(OBJECT_SIZE, OBJECT_SIZE));
 		collision_box->set_layer_dst(CollisionLayer::Role);
 		collision_box->set_layer_src(CollisionLayer::None);
-		image.set_image("wall");
+		int a = rand() % 6+1;
+		if (a > 3)
+			a = 4;
+		std::string image_name = "wall" + std::to_string(a);
+		image.set_image(image_name);
 		image.set_position(real_pos);
 		image.set_size(Vector2(OBJECT_SIZE, OBJECT_SIZE));
 	}
 	~Wall() {}
+	void on_render(const Camera& camera) override
+	{
+		image.on_render(camera);
+	}
+};
+
+class Money :public Object
+{
+public:
+	Money() = default;
+	Money(int x, int y)
+	{
+		logic_pos = Vector2(y, x);
+		real_pos = Vector2(y * OBJECT_SIZE, x * OBJECT_SIZE);
+		collision_box->set_enabled(true);
+		collision_box->set_position(Vector2(real_pos.x + OBJECT_SIZE / 2, real_pos.y + OBJECT_SIZE / 2));
+		collision_box->set_size(Vector2(OBJECT_SIZE, OBJECT_SIZE));
+		collision_box->set_layer_dst(CollisionLayer::None);
+		collision_box->set_layer_src(CollisionLayer::OOO);
+		collision_box->set_on_collide([&]() {
+			collision_box->set_enabled(false);
+			image.set_image("path");
+			});
+		image.set_image("money");
+		image.set_position(real_pos);
+		image.set_size(Vector2(OBJECT_SIZE, OBJECT_SIZE));
+	}
+	void on_render(const Camera& camera) override
+	{
+		image.on_render(camera);
+	}
+};
+
+class Start :public Object
+{
+public:
+	Start() = default;
+	Start(int x, int y)
+	{
+		logic_pos = Vector2(y, x);
+		real_pos = Vector2(y * OBJECT_SIZE, x * OBJECT_SIZE);
+		collision_box->set_enabled(true);
+		collision_box->set_position(Vector2(real_pos.x + OBJECT_SIZE / 2, real_pos.y + OBJECT_SIZE / 2));
+		collision_box->set_size(Vector2(OBJECT_SIZE, OBJECT_SIZE));
+		collision_box->set_layer_dst(CollisionLayer::Role);
+		collision_box->set_layer_src(CollisionLayer::None);
+		image.set_image("start");
+		image.set_position(real_pos);
+		image.set_size(Vector2(OBJECT_SIZE, OBJECT_SIZE));
+	}
+	void on_render(const Camera& camera) override
+	{
+		image.on_render(camera);
+	}
+};
+
+class Exit :public Object
+{
+	public:
+	Exit() = default;
+	Exit(int x, int y)
+	{
+		logic_pos = Vector2(y, x);
+		real_pos = Vector2(y * OBJECT_SIZE, x * OBJECT_SIZE);
+		collision_box->set_enabled(true);
+		collision_box->set_position(Vector2(real_pos.x + OBJECT_SIZE / 2, real_pos.y + OBJECT_SIZE / 2));
+		collision_box->set_size(Vector2(OBJECT_SIZE, OBJECT_SIZE));
+		collision_box->set_layer_dst(CollisionLayer::Role);
+		collision_box->set_layer_src(CollisionLayer::None);
+		image.set_image("exit");
+		image.set_position(real_pos);
+		image.set_size(Vector2(OBJECT_SIZE, OBJECT_SIZE));
+	}
+	void on_render(const Camera& camera) override
+	{
+		image.on_render(camera);
+	}
+};
+
+class Path :public Object
+{
+	public:
+	Path() = default;
+	Path(int x, int y)
+	{
+		logic_pos = Vector2(y, x);
+		real_pos = Vector2(y * OBJECT_SIZE, x * OBJECT_SIZE);
+		collision_box->set_enabled(false);
+		image.set_image("path");
+		image.set_position(real_pos);
+		image.set_size(Vector2(OBJECT_SIZE, OBJECT_SIZE));
+	}
+	void on_render(const Camera& camera) override
+	{
+		image.on_render(camera);
+	}
+};
+class Locker :public Object
+{
+public:
+	Locker() = default;
+	Locker(int x, int y)
+	{
+		logic_pos = Vector2(y, x);
+		real_pos = Vector2(y * OBJECT_SIZE, x * OBJECT_SIZE);
+		collision_box->set_enabled(true);
+		collision_box->set_position(Vector2(real_pos.x + OBJECT_SIZE / 2, real_pos.y + OBJECT_SIZE / 2));
+		collision_box->set_size(Vector2(OBJECT_SIZE, OBJECT_SIZE));
+		collision_box->set_layer_dst(CollisionLayer::None);
+		collision_box->set_layer_src(CollisionLayer::OOO);
+		collision_box->set_on_collide([&]() {
+			collision_box->set_enabled(false);
+			image.set_image("path");
+			});
+		image.set_image("locker");
+		image.set_position(real_pos);
+		image.set_size(Vector2(OBJECT_SIZE, OBJECT_SIZE));
+	}
+	void on_render(const Camera& camera) override
+	{
+		image.on_render(camera);
+	}
+};
+class Boss :public Object
+{
+	public:
+	Boss() = default;
+	Boss(int x, int y)
+	{
+		logic_pos = Vector2(y, x);
+		real_pos = Vector2(y * OBJECT_SIZE, x * OBJECT_SIZE);
+		collision_box->set_enabled(true);
+		collision_box->set_position(Vector2(real_pos.x + OBJECT_SIZE / 2, real_pos.y + OBJECT_SIZE / 2));
+		collision_box->set_size(Vector2(OBJECT_SIZE, OBJECT_SIZE));
+		collision_box->set_layer_dst(CollisionLayer::None);
+		collision_box->set_layer_src(CollisionLayer::OOO);
+		collision_box->set_on_collide([&]() {
+			collision_box->set_enabled(false);
+			});
+		image.set_image("path");
+		image.set_position(real_pos);
+		image.set_size(Vector2(OBJECT_SIZE, OBJECT_SIZE));
+		boss_idle_left.add_frame(ResourcesManager::instance()->find_image("boss_idle_left"), 6);
+		boss_idle_left.set_anchor_mode(Animation::AnchorMode::BottomCentered);
+		boss_idle_left.set_interval(150.0f);
+		boss_idle_left.set_loop(true);
+		boss_idle_left.set_position(Vector2(real_pos.x+OBJECT_SIZE/2,real_pos.y+OBJECT_SIZE));
+	}
+	void on_render(const Camera& camera) override
+	{
+		image.on_render(camera);
+		boss_idle_left.on_render(camera);
+	}
+private:
+	Animation boss_idle_left;
+};
+
+class Trap:public Object
+{
+	public:
+	Trap() = default;
+	Trap(int x, int y)
+	{
+		logic_pos = Vector2(y, x);
+		real_pos = Vector2(y * OBJECT_SIZE, x * OBJECT_SIZE);
+		collision_box->set_enabled(true);
+		collision_box->set_position(Vector2(real_pos.x + OBJECT_SIZE / 2, real_pos.y + OBJECT_SIZE / 2));
+		collision_box->set_size(Vector2(OBJECT_SIZE, OBJECT_SIZE));
+		collision_box->set_layer_dst(CollisionLayer::None);
+		collision_box->set_layer_src(CollisionLayer::OOO);
+		collision_box->set_on_collide([&]() {
+			collision_box->set_enabled(false);
+			image.set_image("path");
+			});
+		image.set_image("trap");
+		image.set_position(real_pos);
+		image.set_size(Vector2(OBJECT_SIZE, OBJECT_SIZE));
+	}
 	void on_render(const Camera& camera) override
 	{
 		image.on_render(camera);
@@ -60,7 +243,7 @@ public:
 		collision_box = CollisionManager::instance()->create_collision_box();
 		collision_box->set_enabled(true);
 		collision_box->set_size(Vector2(OBJECT_SIZE-30, OBJECT_SIZE-30));
-		collision_box->set_layer_dst(CollisionLayer::None);
+		collision_box->set_layer_dst(CollisionLayer::OOO);
 		collision_box->set_layer_src(CollisionLayer::Role);
         collision_box->set_on_collide([&]() {  
             real_pos = old_real_pos;  
@@ -69,15 +252,15 @@ public:
 
 		player_idle_left.add_frame(ResourcesManager::instance()->find_image("player_idle_left"),5);
 		player_idle_left.set_anchor_mode(Animation::AnchorMode::BottomCentered);
-		player_idle_left.set_interval(0.1f);
-		player_idle_left.set_loop(false);
+		player_idle_left.set_interval(150.0f);
+		player_idle_left.set_loop(true);
 		player_idle_right.add_frame(ResourcesManager::instance()->find_image("player_idle_right"), 5);
 		player_idle_right.set_anchor_mode(Animation::AnchorMode::BottomCentered);	
-		player_idle_right.set_interval(0.1f);
-		player_idle_right.set_loop(false);
+		player_idle_right.set_interval(150.0f);
+		player_idle_right.set_loop(true);
 		player_run_left.add_frame(ResourcesManager::instance()->find_image("player_run_left"), 10);
 		player_run_left.set_anchor_mode(Animation::AnchorMode::BottomCentered);
-		player_idle_left.set_interval(0.1f);
+		player_run_left.set_interval(0.1f);
 		player_run_left.set_loop(true);
 		player_run_right.add_frame(ResourcesManager::instance()->find_image("player_run_right"), 10);
 		player_run_right.set_anchor_mode(Animation::AnchorMode::BottomCentered);
