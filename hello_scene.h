@@ -13,6 +13,14 @@ public:
 		startgame.set_on_click([&]()
 			{
 				SceneManager::instance()->switch_to(SceneManager::SceneType::Game);
+
+			});
+		boss.set_pos(280, 320);
+		boss.set_size(240, 60);
+		boss.set_image("startgame");	
+		boss.set_on_click([&]()
+			{
+				SceneManager::instance()->switch_to(SceneManager::SceneType::Boss);
 			});
 	}
 	~HelloScene() = default;
@@ -20,13 +28,17 @@ public:
 	void on_exit() {}
 	void on_update(int delta) {
 		startgame.on_update(delta);
+		boss.on_update(delta);
 	}
 	void on_render(const Camera& camera) {
 		startgame.on_render();
+		boss.on_render();
 	}
 	void on_input(const ExMessage& message) {
 		startgame.on_input(message);
+		boss.on_input(message);
 	}
 private:
 	Button startgame;
+	Button boss;
 };

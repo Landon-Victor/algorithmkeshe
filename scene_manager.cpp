@@ -2,6 +2,7 @@
 #include "scene_manager.h"
 #include "hello_scene.h"
 #include "game_scene.h"
+#include "boss_scene.h"
 
 SceneManager* SceneManager::manager = nullptr;
 
@@ -17,6 +18,7 @@ SceneManager::SceneManager()
 {
 	hello_scene = new HelloScene();
 	game_scene = new GameScene();
+	boss_scene = new BossScene();
 	current_scene = hello_scene;
 	current_scene->on_enter();
 }
@@ -27,6 +29,7 @@ SceneManager::~SceneManager()
 	delete register_scene;
 	delete hello_scene;
 	delete game_scene;
+	delete boss_scene;
 }
 
 void SceneManager::set_current_scene(Scene* scene)
@@ -51,6 +54,9 @@ void SceneManager::switch_to(SceneType type)
 		break;
 	case SceneType::Game:
 		current_scene = game_scene;
+		break;
+	case SceneType::Boss:
+		current_scene = boss_scene;
 		break;
 	default:
 		break;

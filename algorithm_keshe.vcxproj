@@ -123,8 +123,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="attack_strategy.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="collision_manager.cpp" />
+    <ClCompile Include="jsoncpp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map_generator.cpp" />
     <ClCompile Include="resource_manager.cpp" />
@@ -134,12 +136,15 @@
   <ItemGroup>
     <ClInclude Include="animation.h" />
     <ClInclude Include="atlas.h" />
+    <ClInclude Include="boss_scene.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="collision_box.h" />
     <ClInclude Include="collision_manager.h" />
     <ClInclude Include="game_scene.h" />
     <ClInclude Include="hello_scene.h" />
+    <ClInclude Include="json\json-forwards.h" />
+    <ClInclude Include="json\json.h" />
     <ClInclude Include="map_generator.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="resources_manager.h" />
@@ -149,6 +154,7 @@
     <ClInclude Include="timer.h" />
     <ClInclude Include="util.h" />
     <ClInclude Include="vector2.h" />
+    <ClInclude Include="attack_strategy.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

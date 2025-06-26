@@ -34,7 +34,8 @@ public:
 		Login,
 		Register,
 		Hello,
-		Game
+		Game,
+		Boss
 	};
 
 	static SceneManager* instance();
@@ -64,4 +65,5 @@ private:
 	Scene* register_scene = nullptr;
 	Scene* hello_scene = nullptr;
 	Scene* game_scene = nullptr;
+	Scene* boss_scene = nullptr;
 };
