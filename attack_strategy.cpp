@@ -10,11 +10,15 @@ bool NodeCmp::operator()(const Node& a, const Node& b) const {
 
 void AttackStrategy::branch_bound()
 {
+	bestn = 0;
+	best_attack_sequence.clear();
+	min_heap = std::priority_queue<Node, std::vector<Node>, NodeCmp>();
 	Node root;
 	root.c_bosses_blood = bosses_blood;
 	root.valid_attacks.resize(attacks.size(), 0);
 	root.cn = 0;
 	root.ln = calculate_lower_bound(root);
+	root.attack_sequence.clear();
 	min_heap.push(root);
 
 	while (!min_heap.empty())
@@ -23,6 +27,7 @@ void AttackStrategy::branch_bound()
 		min_heap.pop();
 		if (check_leaf(node)) {
 			bestn = node.cn;
+			best_attack_sequence = node.attack_sequence;
 			return;
 		}
 		for (int i = 0; i < node.valid_attacks.size(); ++i)
@@ -41,6 +46,8 @@ void AttackStrategy::branch_bound()
 			next_node.valid_attacks[i] = attack.cd;
 			//回合数下界计算
 			next_node.ln = next_node.cn + calculate_lower_bound(node);
+			next_node.attack_sequence = node.attack_sequence;
+			next_node.attack_sequence.push_back(i);
 			min_heap.push(next_node);
 		}
 	}
@@ -114,9 +121,9 @@ int AttackStrategy::get_attack(std::vector<int>& valid_attacks) const
 	return max_index;
 }
 
-void AttackStrategy::load()
+void AttackStrategy::load(const std::string filename)
 {
-	std::ifstream ifs("data.json", std::ios::binary);
+	std::ifstream ifs(filename, std::ios::binary);
 	if (!ifs.is_open()) return;
 
 	Json::Value root;
@@ -143,10 +150,15 @@ void AttackStrategy::load()
 	}
 }
 
-void AttackStrategy::test()
+void AttackStrategy::test(const std::string filename)
 {
-	load();
+	load(filename);
 	if (bosses_blood.empty() || attacks.empty()) return;
 	branch_bound();
 	std::cout << "Minimum number of turns required: " << bestn << std::endl;
+	std::cout << "Attack sequence: ";
+	for (int idx : best_attack_sequence) {
+		std::cout << idx << " ";
+	}
+	std::cout << std::endl;
 }

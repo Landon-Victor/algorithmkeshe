@@ -151,8 +151,8 @@ def is_end_reachable(maze, start, end):
 
 # 主函数
 def main():
-    file_path = 'map.csv'  # 迷宫文件路径
-    maze = read_maze_csv(file_path)
+    file_path = 'map.json'  # 迷宫文件路径，改为json
+    maze = read_maze(file_path)
     start, end, passages = find_start_end_and_passages(maze)
     
     if start and end:

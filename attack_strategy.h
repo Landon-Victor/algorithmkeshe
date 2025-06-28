@@ -15,6 +15,7 @@ struct Node
 	int ln;//回合数下界
 	std::vector<int> valid_attacks;//可用技能
 	std::vector<int> c_bosses_blood;//当前每个boss的血量
+	std::vector<int> attack_sequence;//攻击顺序
 };
 
 // 比较器
@@ -26,8 +27,8 @@ class AttackStrategy
 {
 public:
 	AttackStrategy() = default;
-	void load();
-	void test();
+	void load(const std::string filename="data.json");
+	void test(const std::string filename="data.json");
 	void branch_bound();
 	bool check_leaf(const Node& node) const;
 	std::vector<int> lose_bosses_blood(int hurt, std::vector<int> c_bosses_blood);
@@ -38,4 +39,5 @@ private:
 	std::map<int, Attack> attacks;
 	std::priority_queue<Node, std::vector<Node>, NodeCmp> min_heap;//根据回合数下界排序的最小堆
 	int bestn;//最少回合数
+	std::vector<int> best_attack_sequence;//最优攻击顺序
 };

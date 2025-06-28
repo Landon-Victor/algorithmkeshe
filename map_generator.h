@@ -21,10 +21,47 @@ public:
 	 Map get_a_map(int size)
 	{
 		divide_conquer_main(size);
-		save_map(L"map.csv");
+		for(int i = 0; i < map.size(); ++i)
+		{
+			for (int j = 0; j < map[i].size(); ++j)
+			{
+				switch (map[i][j])
+				{
+				case Content::none:
+					std::cout << "_";
+					break;
+				case Content::wall:
+					std::cout << "#";
+					break;
+				case Content::start:
+					std::cout << "S";
+					break;
+				case Content::exit:
+					std::cout << "E";
+					break;
+				case Content::trap:
+					std::cout << "T";
+					break;
+				case Content::locker:
+					std::cout << "L";
+					break;
+				case Content::boss:
+					std::cout << "B";
+					break;
+				case Content::money:
+					std::cout << "M";
+					break;
+				default:
+					std::cout << "?";
+					break;
+				}
+			}
+			std::cout << std::endl;
+		}
+		save_map();
 		return map;
 	}
-	void save_map(const std::wstring& filename);
+	void save_map(const std::wstring& filename=L"map.json");
 	MapGenerator() = default;
 	~MapGenerator() = default;
 private:

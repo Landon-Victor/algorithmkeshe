@@ -4,7 +4,7 @@
 #include <codecvt>
 #include <algorithm> 
 #include <iostream>
-
+#include "json/json.h"
 #include "map_generator.h"
 #include "vector2.h"
 
@@ -267,28 +267,38 @@ void MapGenerator::bfs_traverse(const Vector2& start)
 
 void MapGenerator::save_map(const std::wstring& filename)
 {
-	std::wofstream ofs(filename);
-	ofs.imbue(std::locale(std::locale(), new std::codecvt_utf8<wchar_t>));
+	std::ofstream ofs;
+#ifdef _WIN32
+	std::string fn(filename.begin(), filename.end());
+	ofs.open(fn, std::ios::out | std::ios::trunc);
+#else
+	std::ofstream ofs(filename);
+#endif
 	if (!ofs.is_open()) return;
 
-	for (const auto& row : map) {
-		bool first = true;
-		for (const auto& cell : row) {
-			if (!first) ofs << L",";
-			switch (cell) {
-			case Content::none:   ofs << L"_"; break;
-			case Content::wall:   ofs << L"#"; break;
-			case Content::start:  ofs << L"S"; break;
-			case Content::exit:   ofs << L"E"; break;
-			case Content::trap:   ofs << L"T"; break;
-			case Content::locker: ofs << L"L"; break;
-			case Content::boss:   ofs << L"B"; break;
-			case Content::money:  ofs << L"M"; break;
-			default:              ofs << L"_"; break;
+	ofs << "{\n  \"maze\": [\n";
+	for (size_t i = 0; i < map.size(); ++i) {
+		ofs << "    [";
+		for (size_t j = 0; j < map[i].size(); ++j) {
+			std::string cell;
+			switch (map[i][j]) {
+			case Content::none:   cell = " "; break;
+			case Content::wall:   cell = "#"; break;
+			case Content::start:  cell = "S"; break;
+			case Content::exit:   cell = "E"; break;
+			case Content::trap:   cell = "T"; break;
+			case Content::locker: cell = "L"; break;
+			case Content::boss:   cell = "B"; break;
+			case Content::money:  cell = "G"; break;
+			default:              cell = " "; break;
 			}
-			first = false;
+			ofs << "\"" << cell << "\"";
+			if (j + 1 < map[i].size()) ofs << ",";
 		}
-		ofs << L"\n";
+		ofs << "]";
+		if (i + 1 < map.size()) ofs << ",\n";
+		else ofs << "\n";
 	}
+	ofs << "  ]\n}\n";
 	ofs.close();
 }

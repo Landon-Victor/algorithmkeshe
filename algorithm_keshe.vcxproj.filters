@@ -101,13 +101,28 @@
     <ClInclude Include="attack_strategy.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="boss_scene.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="json\json.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="json\json-forwards.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="boss_scene.h">
+    <ClInclude Include="PasswordSolver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Decode.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="decode_scene.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="test.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="maze_solver.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
