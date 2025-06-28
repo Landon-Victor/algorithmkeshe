@@ -25,7 +25,6 @@ public:
 private:
 
 };
-
 class SceneManager
 {
 public:
@@ -53,7 +52,6 @@ public:
 	void on_render(const Camera& camera);
 
 	void on_input(ExMessage& msg);
-
 
 
 private:
