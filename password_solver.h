@@ -40,6 +40,12 @@ public:
 			hash = root["L"].asString();
         }
     }
+    std::vector<std::vector<int>> getClues() const {
+        return clues;
+	}
+    std::string getQuestion() const {
+        return hash;
+    }
 private:
     PasswordLock lock;
     std::vector<std::vector<int>> clues;

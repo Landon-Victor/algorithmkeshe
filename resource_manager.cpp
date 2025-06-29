@@ -38,6 +38,22 @@ static const std::vector<ImageResInfo> image_info_list =
 	{"path",                              _T(R"(resources\path.png)")},
 	{"money",							  _T(R"(resources\money.png)")},
 	{"trap",							  _T(R"(resources\trap.png)")},
+	{"button_test_1",                _T(R"(resources\ui\button_test_1.png)")},
+	{"button_test_2",                _T(R"(resources\ui\button_test_2.png)")},
+	{"button_test_3",                _T(R"(resources\ui\button_test_3.png)")},
+	{"button_auto_1",                _T(R"(resources\ui\button_auto_1.png)")},
+	{"button_auto_2",                _T(R"(resources\ui\button_auto_2.png)")},
+	{"button_auto_3",                _T(R"(resources\ui\button_auto_3.png)")},
+	{"button_path_1",                _T(R"(resources\ui\button_path_1.png)")},
+	{"button_path_2",                _T(R"(resources\ui\button_path_2.png)")},
+	{"button_path_3",                _T(R"(resources\ui\button_path_3.png)")},
+	{"button_backmenu_1",         _T(R"(resources\ui\button_backmenu_1.png)")},
+	{"button_backmenu_2",         _T(R"(resources\ui\button_backmenu_2.png)")},
+	{"button_backmenu_3",         _T(R"(resources\ui\button_backmenu_3.png)")},
+	{"button_exit_1",                _T(R"(resources\ui\button_exit_1.png)")},
+	{"button_exit_2",                _T(R"(resources\ui\button_exit_2.png)")},
+	{"button_exit_3",                _T(R"(resources\ui\button_exit_3.png)")},
+	{"cursor",							_T(R"(resources\cursor.png)")},
 };
 
 static inline bool check_image_valid(IMAGE* image)

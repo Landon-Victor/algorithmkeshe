@@ -18,7 +18,7 @@ public:
 			});
 		test.set_pos(280, 320);
 		test.set_size(240, 60);
-		test.set_image("startgame");	
+		test.set_image("test");	
 		test.set_on_click([&]()
 			{
 				t.test_main();

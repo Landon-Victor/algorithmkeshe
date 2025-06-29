@@ -95,7 +95,8 @@ class Player
 public:
     Player();
     ~Player();
-    const Vector2& get_position();
+    const Vector2& get_real_pos();
+	const Vector2& get_logic_pos();
     void set_position(const Vector2& pos, GameScene* g);
     void on_input(const ExMessage& msg);
     void on_update(int delta);
@@ -116,4 +117,6 @@ private:
     bool is_up_key_down = false;
     bool is_down_key_down = false;
     bool is_facing_right = true;
+
+	bool is_moving = false;
 };

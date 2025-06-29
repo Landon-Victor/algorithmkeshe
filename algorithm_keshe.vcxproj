@@ -126,6 +126,9 @@
     <ClCompile Include="attack_strategy.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="collision_manager.cpp" />
+    <ClCompile Include="Decode.cpp" />
+    <ClCompile Include="decode_scene.cpp" />
+    <ClCompile Include="game_scene.cpp" />
     <ClCompile Include="jsoncpp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map_generator.cpp" />
@@ -151,7 +154,7 @@
     <ClInclude Include="map_generator.h" />
     <ClInclude Include="maze_solver.h" />
     <ClInclude Include="object.h" />
-    <ClInclude Include="PasswordSolver.h" />
+    <ClInclude Include="password_solver.h" />
     <ClInclude Include="resources_manager.h" />
     <ClInclude Include="scene_manager.h" />
     <ClInclude Include="static_image.h" />

@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <fstream>
 #include "json/json.h"
+#include "vector2.h"
 using namespace std;
 
 class MazeSolver {
@@ -64,7 +65,13 @@ public:
         // 初始化资源点信息
         initResources();
     }
-
+    vector<Vector2> getPath() const {
+        vector<Vector2> vec_path;
+        for (const auto& p : path) {
+            vec_path.emplace_back(p.first, p.second);
+        }
+        return vec_path;
+	}
 private:
     // 查找起点S和终点E的位置
     void findStartAndEnd() {
@@ -211,43 +218,54 @@ public:
         }
         cout << endl;
 		std::cout << "最大资源值: " << ans << endl;
-        std::cout << ans << endl;
+		std::cout << "路径长度: " << path.size() << endl;
     }
-    void save_path(const string filename="path.json")
+    void save_path(const string& filename = "path.json")
     {
+        // 先用JsonCpp生成max_resource和optimal_path部分
         Json::Value root;
-
-        // 保存maze
-        Json::Value arr_maze;
-        for (const auto& row : maze) {
-            Json::Value arr_row;
-            for (const auto& cell : row) {
-                arr_row.append(cell);
-            }
-            arr_maze.append(arr_row);
-        }
-        root["maze"] = arr_maze;
-
-        // 保存最大资源值
         root["max_resource"] = ans;
-
-        // 保存最优路径
-        Json::Value arr_path;
+        // optimal_path
+        Json::Value arr_path(Json::arrayValue);
         for (const auto& p : path) {
-            Json::Value point;
+            Json::Value point(Json::arrayValue);
             point.append(p.first);
             point.append(p.second);
             arr_path.append(point);
         }
         root["optimal_path"] = arr_path;
 
-        // 写入文件
-        ofstream ofs(filename);
+        // 手动写入文件，maze部分自定义格式
+        std::ofstream ofs(filename);
         if (!ofs.is_open()) {
-            cerr << "无法写入文件: " << filename << endl;
+            std::cerr << "无法写入文件: " << filename << std::endl;
             return;
         }
-        ofs << root.toStyledString();
+        ofs << "{\n";
+        // maze
+        ofs << "  \"maze\": [\n";
+        for (size_t i = 0; i < maze.size(); ++i) {
+            ofs << "    [";
+            for (size_t j = 0; j < maze[i].size(); ++j) {
+                ofs << '"' << maze[i][j] << '"';
+                if (j + 1 < maze[i].size()) ofs << ",";
+            }
+            ofs << "]";
+            if (i + 1 < maze.size()) ofs << ",";
+            ofs << "\n";
+        }
+        ofs << "  ],\n";
+        // max_resource
+        ofs << "  \"max_resource\": " << ans << ",\n";
+        // optimal_path
+        ofs << "  \"optimal_path\": [\n";
+        for (Json::ArrayIndex i = 0; i < root["optimal_path"].size(); ++i) {
+            ofs << "    [" << root["optimal_path"][i][0] << "," << root["optimal_path"][i][1] << "]";
+            if (i + 1 < root["optimal_path"].size()) ofs << ",";
+            ofs << "\n";
+        }
+        ofs << "  ]\n";
+        ofs << "}\n";
         ofs.close();
     }
 };

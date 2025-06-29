@@ -123,7 +123,7 @@ void Textbox::on_render(const Camera& camera)
     // 绘制光标
     if (isActive)
     {
-        cursor.on_render(camera);
+        cursor.on_render();
     }
 
     // 恢复环境值

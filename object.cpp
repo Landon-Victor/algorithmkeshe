@@ -52,6 +52,7 @@ Money::Money(int x, int y, GameScene* scene) : Object(scene) {
         collision_box->set_enabled(false);
         image.set_image("path");
         game_scene->map[logic_pos.y][logic_pos.x] = Content::none;
+        game_scene->cur_money += 5;
         });
     image.set_image("money");
     image.set_position(real_pos);
@@ -120,6 +121,7 @@ Locker::Locker(int x, int y, GameScene* scene) : Object(scene) {
     collision_box->set_on_collide([&]() {
         collision_box->set_enabled(false);
         image.set_image("path");
+		SceneManager::instance()->switch_to(SceneManager::SceneType::Decode);
         game_scene->map[logic_pos.y][logic_pos.x] = Content::none;
         });
     image.set_image("locker");
@@ -172,6 +174,7 @@ Trap::Trap(int x, int y, GameScene* scene) : Object(scene) {
         collision_box->set_enabled(false);
         image.set_image("path");
         game_scene->map[logic_pos.y][logic_pos.x] = Content::none;
+        game_scene->cur_money -= 3;
         });
     image.set_image("trap");
     image.set_position(real_pos);
@@ -217,8 +220,11 @@ Player::~Player() {
         collision_box = nullptr;
     }
 }
-const Vector2& Player::get_position() {
+const Vector2& Player::get_real_pos() {
     return real_pos;
+}
+const Vector2& Player::get_logic_pos() {
+    return logic_pos;
 }
 void Player::set_position(const Vector2& pos, GameScene* g) {
     logic_pos = Vector2(pos.y, pos.x);
@@ -268,6 +274,10 @@ void Player::on_update(int delta) {
     current_animation->on_update(delta);
     collision_box->set_position(Vector2(real_pos.x, real_pos.y - OBJECT_SIZE / 2));
     CollisionManager::instance()->process_collide();
+	Vector2 temp((int)((real_pos.x- OBJECT_SIZE / 2) / OBJECT_SIZE), (int)(real_pos.y / OBJECT_SIZE));
+    if ((int)temp.x % 2 == 1 && (int)temp.y % 2 == 1) {
+		logic_pos = Vector2(temp.x, temp.y);
+    }
 }
 void Player::on_render(const Camera& camera) {
     if (current_animation != nullptr) {

@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include "map_generator.h"
-#include "PasswordSolver.h"
+#include "password_solver.h"
 #include "attack_strategy.h"
 #include "maze_solver.h"
 class Test 

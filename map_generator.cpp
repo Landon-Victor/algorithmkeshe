@@ -4,6 +4,7 @@
 #include <codecvt>
 #include <algorithm> 
 #include <iostream>
+#include<graphics.h>
 #include "json/json.h"
 #include "map_generator.h"
 #include "vector2.h"
@@ -35,6 +36,7 @@ void MapGenerator::divide_conquer_main(int size)
 		map[2 * size][i] = Content::wall;
 		map[i][0] = Content::wall;
 		map[i][2 * size] = Content::wall;
+		
 	}
 	//把平面分成四块，分治生成迷宫
 	//（奇数,奇数）位置为迷宫单元，其余位置描述联通性
@@ -153,14 +155,16 @@ void MapGenerator::divide_conquer(int row_start, int row_end, int col_start, int
 	//墙位置必须是偶数行或偶数列
 	int row_div = rand() % ((row_end - row_start)/2)*2 + row_start + 1;
 	int col_div = rand() % ((col_end - col_start) / 2) * 2 + col_start + 1;
+
 	for(int i = row_start; i <= row_end; ++i)
 	{
 		map[i][col_div] = Content::wall;
 	}
 	for(int i = col_start; i <= col_end; ++i)
 	{
-		map[row_div][i] = Content::wall; 
+		map[row_div][i] = Content::wall;
 	}
+
 	//在分割线上随机打通三个通道
 	//通道位置必须是奇数行或奇数列
 	int row_hole = rand() % ((row_end - row_start) / 2+1) * 2 + row_start;
@@ -200,6 +204,16 @@ void MapGenerator::divide_conquer(int row_start, int row_end, int col_start, int
 			map[row_hole][col_div] = Content::none;
 		}
 	}
+	// 记录当前所有墙壁格子的快照
+	std::vector<Vector2> wall_snapshot;
+	for (int i = 0; i < map.size(); ++i) {
+		for (int j = 0; j < map[i].size(); ++j) {
+			if (map[i][j] == Content::wall) {
+				wall_snapshot.push_back(Vector2(i, j));
+			}
+		}
+	}
+	generated_secquences.push_back(wall_snapshot);
 	//递归处理四个子区域
 	divide_conquer(row_start, row_div-1, col_start, col_div-1);
 	divide_conquer(row_start, row_div-1, col_div+1, col_end);
@@ -301,4 +315,44 @@ void MapGenerator::save_map(const std::wstring& filename)
 	}
 	ofs << "  ]\n}\n";
 	ofs.close();
+}
+
+void MapGenerator::on_render()
+{
+	if (!is_show)
+		return;
+	const int render_width = 610;
+	const int render_height = 610;
+	const int offset_x = (880 - render_width) / 2; // 居中
+	const int offset_y = 0;
+	int rows = map.size();
+	int cols = map[0].size();
+	int cell_w = render_width / (rows % 2 == 0 ? rows / 2 : (rows - 1) / 2);
+	int cell_h = render_height / (cols % 2 == 0 ? cols / 2 : (cols - 1) / 2);
+	int wall_w = 2;
+	int wall_h = 2;
+
+	const auto& walls = generated_secquences[index];
+	for (const auto& v : walls) {
+		int i = (int)v.x, j = (int)v.y;
+		int x = offset_x, y = offset_y, w = cell_w, h = cell_h;
+		if (j % 2 == 0) {
+			x += (j / 2) * cell_w + (j / 2) * wall_w;
+			w = wall_w;
+		}
+		else {
+			x += (j / 2) * cell_w + ((j + 1) / 2) * wall_w;
+			w = cell_w;
+		}
+		if (i % 2 == 0) {
+			y += (i / 2) * cell_h + (i / 2) * wall_h;
+			h = wall_h;
+		}
+		else {
+			y += (i / 2) * cell_h + ((i + 1) / 2) * wall_h;
+			h = cell_h;
+		}
+		setfillcolor(WHITE);
+		solidrectangle(x, y, x + w, y + h);
+	}
 }

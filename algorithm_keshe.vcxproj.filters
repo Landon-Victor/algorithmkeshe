@@ -45,6 +45,15 @@
     <ClCompile Include="object.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="game_scene.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="decode_scene.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Decode.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="util.h">
@@ -110,7 +119,7 @@
     <ClInclude Include="json\json-forwards.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="PasswordSolver.h">
+    <ClInclude Include="password_solver.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Decode.h">

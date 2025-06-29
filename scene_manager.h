@@ -4,7 +4,10 @@
 #include "camera.h"
 
 // 页面的抽象基类
-
+class HelloScene;
+class GameScene;
+class BossScene;
+class DecodeScene;
 class Scene
 {
 public:
@@ -34,7 +37,8 @@ public:
 		Register,
 		Hello,
 		Game,
-		Boss
+		Boss,
+		Decode
 	};
 
 	static SceneManager* instance();
@@ -53,15 +57,14 @@ public:
 
 	void on_input(ExMessage& msg);
 
-
 private:
 	Scene* current_scene = nullptr;
 
 	static SceneManager* manager;
 
-	Scene* login_scene = nullptr;
-	Scene* register_scene = nullptr;
-	Scene* hello_scene = nullptr;
-	Scene* game_scene = nullptr;
-	Scene* boss_scene = nullptr;
+	
+	HelloScene* hello_scene = nullptr;
+	GameScene* game_scene = nullptr;
+	BossScene* boss_scene = nullptr;
+	DecodeScene* decode_scene = nullptr;
 };

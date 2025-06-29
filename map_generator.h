@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 #include "vector2.h"
+#include "camera.h"
+#include "timer.h"
 
 enum class Content
 {
@@ -62,8 +64,34 @@ public:
 		return map;
 	}
 	void save_map(const std::wstring& filename=L"map.json");
-	MapGenerator() = default;
+	MapGenerator()
+	{
+		timer.set_wait_time(100);
+		timer.set_one_shot(false);
+		timer.set_callback([this]()
+		{
+			if (index < generated_secquences.size()-1)
+			{
+				index++;
+			}
+			else
+			{
+				timer.pause();
+				is_show = false;
+				Sleep(1000);
+			}
+			});
+
+	}
 	~MapGenerator() = default;
+	void on_render();
+	void on_update(int delta)
+	{
+		if (!is_show)
+			return;
+		timer.on_update(delta);
+	}
+	bool get_is_show() const { return is_show; }
 private:
 	void divide_conquer_main(int size);
 	void divide_conquer(int row_start,int row_end,int col_start, int col_end);
@@ -71,4 +99,8 @@ private:
 private:
 	Map map;
 	std::vector<Vector2> path;
+	std::vector<std::vector<Vector2>> generated_secquences;//Â·¾¶Éú³ÉË³Ðò
+	Timer timer;
+	int index = 0;
+	bool is_show = true;
 };
