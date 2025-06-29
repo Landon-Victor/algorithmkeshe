@@ -17,6 +17,27 @@ void DecodeScene::on_enter() {
     try_times = 0;
     generate_question();
     textbox.Set_Textbox(200, 260, 440, 300, 4);
+    textbox.set_callback([this]() {
+        std::wstring ws = textbox.get_Textbox();
+        if (ws.length() == 3) {
+            std::string guess(ws.begin(), ws.end());
+            bool correct = solver.verifyPassword(guess);
+            if (correct) {
+                try_info info{ guess, correct };
+                try_history.push_back(info);
+                try_times++;
+                textbox.Clear();
+                g->player.clear_move();
+				SceneManager::instance()->switch_to(SceneManager::SceneType::Game);
+            }
+            else {
+                g->cur_money--;
+            }
+            try_info info{ guess, correct };
+            try_history.push_back(info);
+            try_times++;
+            textbox.Clear();
+        }});
     textbox.Clear();
 }
 
@@ -29,27 +50,14 @@ void DecodeScene::on_update(int delta) {
 
 void DecodeScene::on_input(const ExMessage& msg) {
     textbox.on_input(msg);
-    if (msg.message == WM_KEYDOWN && msg.ch == '\r') { // 回车提交
-        std::wstring ws = textbox.get_Textbox();
-        std::string guess(ws.begin(), ws.end());
-        if (guess.length() == 3) {
-            bool correct = solver.verifyPassword(guess);
-            if (correct) {
-
-            }
-            else {
-                g->cur_money--;
-            }
-            try_info info{ guess, correct };
-            try_history.push_back(info);
-            try_times++;
-            textbox.Clear();
-        }
-    }
     g->on_input_right(msg);
 }
 
 void DecodeScene::on_render(const Camera& camera) {
+    LOGFONT oldStyle;
+    int oldBkMode = getbkmode();
+    COLORREF oldTextColor = gettextcolor();
+    gettextstyle(&oldStyle);
     setbkmode(TRANSPARENT);
 
     // 背景色块（左侧区域）
@@ -119,6 +127,9 @@ void DecodeScene::on_render(const Camera& camera) {
         y += 24;
     }
 
-    settextstyle(16, 0, _T("宋体"));
-	g->on_render_right();
+    // 恢复原样式
+    settextstyle(&oldStyle);
+    setbkmode(oldBkMode);
+    settextcolor(oldTextColor);
+    g->on_render_right();
 }

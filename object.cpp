@@ -121,8 +121,9 @@ Locker::Locker(int x, int y, GameScene* scene) : Object(scene) {
     collision_box->set_on_collide([&]() {
         collision_box->set_enabled(false);
         image.set_image("path");
-		SceneManager::instance()->switch_to(SceneManager::SceneType::Decode);
         game_scene->map[logic_pos.y][logic_pos.x] = Content::none;
+		game_scene->is_skip_enter = true;
+		SceneManager::instance()->switch_to(SceneManager::SceneType::Decode);
         });
     image.set_image("locker");
     image.set_position(real_pos);
@@ -234,6 +235,10 @@ void Player::set_position(const Vector2& pos, GameScene* g) {
     game_scene = g;
 }
 void Player::on_input(const ExMessage& msg) {
+    if (is_auto_moving)
+    {
+        return;
+    }
     switch (msg.message) {
     case WM_KEYDOWN:
         switch (msg.vkcode) {
@@ -256,6 +261,83 @@ void Player::on_input(const ExMessage& msg) {
     }
 }
 void Player::on_update(int delta) {
+    if (is_auto_moving) {
+        Vector2 cur_pos = Vector2((int)((real_pos.y - OBJECT_SIZE / 2) / OBJECT_SIZE), (int)((real_pos.x) / OBJECT_SIZE));
+        if (is_moving)
+        {
+            if (is_up_key_down)
+            {
+                if (real_pos.y <= path[auto_move_index].x * OBJECT_SIZE + OBJECT_SIZE)
+                {
+                    is_up_key_down = false;
+                    is_moving = false;
+                    auto_move_index++;
+
+                }
+            }
+            else if (is_down_key_down)
+            {
+                if (real_pos.y >= path[auto_move_index].x * OBJECT_SIZE + OBJECT_SIZE)
+                {
+                    is_down_key_down = false;
+                    is_moving = false;
+                    auto_move_index++;
+                }
+            }
+            else if (is_left_key_down)
+            {
+                if (real_pos.x <= path[auto_move_index].y * OBJECT_SIZE + OBJECT_SIZE / 2)
+                {
+                    is_left_key_down = false;
+                    is_moving = false;
+                    auto_move_index++;
+                }
+            }
+            else if (is_right_key_down)
+            {
+                if (real_pos.x >= path[auto_move_index].y * OBJECT_SIZE + OBJECT_SIZE / 2)
+                {
+                    is_right_key_down = false;
+                    is_moving = false;
+                    auto_move_index++;
+                }
+            }
+        }
+        if (cur_pos.x < path[auto_move_index].x) {
+            is_down_key_down = true;
+            std::cout << "auto_move_index: " << auto_move_index << std::endl;
+            std::cout << path[auto_move_index].x << " " << path[auto_move_index].y << std::endl;
+            std::cout << "real_pos: " << real_pos.x << " " << real_pos.y << std::endl;
+            std::cout << "cur_pos: " << cur_pos.x << " " << cur_pos.y << std::endl;
+            std::cout << "is_down_key_down" << std::endl;
+        }
+        else if (cur_pos.x > path[auto_move_index].x) {
+            is_up_key_down = true;
+            std::cout << "auto_move_index: " << auto_move_index << std::endl;
+            std::cout << path[auto_move_index].x << " " << path[auto_move_index].y << std::endl;
+            std::cout << "real_pos: " << real_pos.x << " " << real_pos.y << std::endl;
+            std::cout << "cur_pos: " << cur_pos.x << " " << cur_pos.y << std::endl;
+            std::cout << "is_up_key_down" << std::endl;
+        }
+        else if (cur_pos.y < path[auto_move_index].y) {
+            is_right_key_down = true;
+            std::cout << "auto_move_index: " << auto_move_index << std::endl;
+            std::cout << path[auto_move_index].x << " " << path[auto_move_index].y << std::endl;
+            std::cout << "real_pos: " << real_pos.x << " " << real_pos.y << std::endl;
+            std::cout << "cur_pos: " << cur_pos.x << " " << cur_pos.y << std::endl;
+            std::cout << "is_right_key_down" << std::endl;
+        }
+        else if (cur_pos.y > path[auto_move_index].y) {
+            is_left_key_down = true;
+            std::cout << "auto_move_index: " << auto_move_index << std::endl;
+            std::cout << path[auto_move_index].x << " " << path[auto_move_index].y << std::endl;
+            std::cout << "real_pos: " << real_pos.x << " " << real_pos.y << std::endl;
+            std::cout << "cur_pos: " << cur_pos.x << " " << cur_pos.y << std::endl;
+            std::cout << "is_left_key_down" << std::endl;
+
+        }
+        is_moving = true;
+    }
     old_real_pos = real_pos;
     int xdirection = is_right_key_down - is_left_key_down;
     if (xdirection != 0) {

@@ -47,6 +47,6 @@ private:
     int cur_money = 0;
     Button automatic;
 	Button path;
-    bool is_auto = false;
-	bool is_path = false;
+    bool is_path = false;
+	bool is_skip_enter = false;
 };

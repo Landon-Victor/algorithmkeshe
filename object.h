@@ -101,6 +101,21 @@ public:
     void on_input(const ExMessage& msg);
     void on_update(int delta);
     void on_render(const Camera& camera);
+    void clear_move()
+    {
+        is_left_key_down = false;
+        is_right_key_down = false;
+        is_up_key_down = false;
+		is_down_key_down = false;
+    }
+    void change_auto_move()
+    {
+		is_auto_moving = is_auto_moving ? false : true;
+	}
+    void set_path(const std::vector<Vector2>& p)
+    {
+        path = p;
+	}
 private:
     CollisionBox* collision_box = nullptr;
     Vector2 old_real_pos;
@@ -112,6 +127,7 @@ private:
     Animation player_run_right;
     Animation* current_animation = nullptr;
     GameScene* game_scene = nullptr;
+    std::vector<Vector2> path;
     bool is_left_key_down = false;
     bool is_right_key_down = false;
     bool is_up_key_down = false;
@@ -119,4 +135,6 @@ private:
     bool is_facing_right = true;
 
 	bool is_moving = false;
+    bool is_auto_moving = false;
+	int auto_move_index = 1;
 };

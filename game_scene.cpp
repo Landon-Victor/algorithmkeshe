@@ -5,11 +5,16 @@
 GameScene::GameScene() {}
 
 void GameScene::on_enter() {
+    if (is_skip_enter)
+    {
+        is_skip_enter = false;
+        return;
+    }
 	automatic.set_image("auto");
 	automatic.set_pos(640, 500);
 	automatic.set_size(240, 60);
     automatic.set_on_click([this]() {
-        is_auto=is_auto?false:true;
+        player.change_auto_move();
 		});
 	path.set_image("path");
 	path.set_pos(640, 580);
@@ -59,6 +64,7 @@ void GameScene::on_enter() {
     maze_solver.init();
     maze_solver.solve();
     best_path = maze_solver.getPath();
+	player.set_path(best_path);
 }
 
 void GameScene::on_exit() {}
@@ -243,7 +249,6 @@ void GameScene::on_render_right() {
     LOGFONT oldStyle;
     int oldBkMode = getbkmode();
     COLORREF oldTextColor = gettextcolor();
-
     gettextstyle(&oldStyle);
 
     // 设置新样式

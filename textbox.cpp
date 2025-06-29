@@ -80,6 +80,8 @@ void Textbox::on_input(const ExMessage& msg)
             case '\r':				// 用户按回车键，结束文本输入
             case '\n':
                 isActive = false;
+                if (on_change)
+					on_change();
                 break;
             default:				// 用户按其它键，接受文本输入
                 if (text.size() < maxlen - 1 && iswprint(msg.ch) && !iswspace(msg.ch))
