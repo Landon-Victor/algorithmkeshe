@@ -1,12 +1,22 @@
 import json
 from collections import deque
 import itertools
+import csv
 
 # 从JSON文件中读取迷宫
 def read_maze(file_path):
     with open(file_path, 'r') as file:
         data = json.load(file)
     return data['maze']
+
+# 从CSV文件中读取迷宫
+def read_maze_csv(file_path):
+    maze = []
+    with open(file_path, 'r', encoding='utf-8') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            maze.append(list(row))
+    return maze
 
 # 广度优先搜索函数
 def bfs(maze, start, end=None):
@@ -141,7 +151,7 @@ def is_end_reachable(maze, start, end):
 
 # 主函数
 def main():
-    file_path = 'map.json'  # 迷宫文件路径
+    file_path = 'map.json'  # 迷宫文件路径，改为json
     maze = read_maze(file_path)
     start, end, passages = find_start_end_and_passages(maze)
     

@@ -17,7 +17,7 @@ struct Node
 	std::vector<int> c_bosses_blood;//当前每个boss的血量
 	std::vector<int> attack_sequence;//攻击顺序
 };
-
+class BossScene;
 // 比较器
 struct NodeCmp {
 	bool operator()(const Node& a, const Node& b) const;
@@ -25,6 +25,7 @@ struct NodeCmp {
 
 class AttackStrategy
 {
+	friend class BossScene;
 public:
 	AttackStrategy() = default;
 	void load(const std::string filename="data.json");

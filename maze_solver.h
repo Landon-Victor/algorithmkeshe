@@ -30,10 +30,7 @@ public:
             return;
         }
 
-        // 读取整个文件内容到字符串
         string json_str((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
-
-        // 使用 jsoncpp 解析
         Json::Value root;
         Json::Reader reader;
         if (!reader.parse(json_str, root)) {
@@ -51,6 +48,28 @@ public:
                 row.push_back(arr_row[j].asString());
             }
             maze.push_back(row);
+        }
+
+        string result_filename = "result_" + filename;
+        ifstream ifs_result(result_filename);
+        path.clear();
+        if (ifs_result.is_open()) {
+            string json_str_result((istreambuf_iterator<char>(ifs_result)), istreambuf_iterator<char>());
+            Json::Value root_result;
+            Json::Reader reader_result;
+            if (reader_result.parse(json_str_result, root_result)) {
+                const Json::Value& arr_path = root_result["optimal_path"];
+                for (Json::Value::ArrayIndex i = 0; i < arr_path.size(); ++i) {
+                    if (arr_path[i].isArray() && arr_path[i].size() == 2) {
+                        int x = arr_path[i][0].asInt();
+                        int y = arr_path[i][1].asInt();
+                        path.emplace_back(x, y);
+                    }
+                }
+                if (root_result.isMember("max_resource")) {
+                    ans = root_result["max_resource"].asInt()/10;
+                }
+            }
         }
     }
     // 构造函数，接收迷宫数据

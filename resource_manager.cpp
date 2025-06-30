@@ -54,6 +54,19 @@ static const std::vector<ImageResInfo> image_info_list =
 	{"button_exit_2",                _T(R"(resources\ui\button_exit_2.png)")},
 	{"button_exit_3",                _T(R"(resources\ui\button_exit_3.png)")},
 	{"cursor",							_T(R"(resources\cursor.png)")},
+	{"button_attack1_1",		 _T(R"(resources\ui\button_attack1_1.png)")},
+	{"button_attack1_2",         _T(R"(resources\ui\button_attack1_2.png)")},
+	{"button_attack1_3",         _T(R"(resources\ui\button_attack1_3.png)")},
+	{"button_attack2_1",         _T(R"(resources\ui\button_attack2_1.png)")},
+	{"button_attack2_2",         _T(R"(resources\ui\button_attack2_2.png)")},
+	{"button_attack2_3",         _T(R"(resources\ui\button_attack2_3.png)")},
+	{"button_attack3_1",         _T(R"(resources\ui\button_attack3_1.png)")},
+	{"button_attack3_2",         _T(R"(resources\ui\button_attack3_2.png)")},
+	{"button_attack3_3",         _T(R"(resources\ui\button_attack3_3.png)")},
+	{"button_attack4_1",         _T(R"(resources\ui\button_attack4_1.png)")},
+	{"button_attack4_2",         _T(R"(resources\ui\button_attack4_2.png)")},
+	{"button_attack4_3",         _T(R"(resources\ui\button_attack4_3.png)")},
+	{"blood",							  _T(R"(resources\blood.png)")},
 };
 
 static inline bool check_image_valid(IMAGE* image)
@@ -75,6 +88,7 @@ void ResourcesManager::load()
 	}
 	flip_image("player_idle_right", "player_idle_left", 5);
 	flip_image("player_run_right", "player_run_left", 10);
+	flip_image("boss_idle_left", "boss_idle_right", 6);
 }
 
 ResourcesManager* ResourcesManager::manager = nullptr;

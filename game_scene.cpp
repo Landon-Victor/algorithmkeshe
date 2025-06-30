@@ -14,7 +14,19 @@ void GameScene::on_enter() {
 	automatic.set_pos(640, 500);
 	automatic.set_size(240, 60);
     automatic.set_on_click([this]() {
-        player.change_auto_move();
+        switch (current_scene) {
+        case 0:
+            player.change_auto_move();
+            break;
+        case 1:
+			is_auto_decode = is_auto_decode ? false : true;
+            break;
+        case 2:
+			is_auto_attack = is_auto_attack ? false : true;
+            break;
+		default:
+            break;
+        }
 		});
 	path.set_image("path");
 	path.set_pos(640, 580);
@@ -67,7 +79,9 @@ void GameScene::on_enter() {
 	player.set_path(best_path);
 }
 
-void GameScene::on_exit() {}
+void GameScene::on_exit() {
+    player.clear_move();
+}
 
 void GameScene::on_render(const Camera& camera) {
     if (map_generator.get_is_show()) {
@@ -195,6 +209,21 @@ void GameScene::little_on_render() {
             }
         }
     }
+    if (is_path)
+    {
+        // 绘制最优路径
+        setlinecolor(RGB(255, 255, 0)); // 黄色
+        setlinestyle(PS_SOLID, 2);
+        for (size_t k = 0; k < best_path.size() - 1; ++k) {
+            Vector2 start = best_path[k];
+            Vector2 end = best_path[k + 1];
+            int start_x = offset_x + ((int(start.y) / 2) * cell_w + (int(start.y) / 2) * wall_w) + cell_w / 2;
+            int start_y = offset_y + ((int(start.x) / 2) * cell_h + (int(start.x) / 2) * wall_h) + cell_h / 2;
+            int end_x = offset_x + ((int(end.y) / 2) * cell_w + (int(end.y) / 2) * wall_w) + cell_w / 2;
+            int end_y = offset_y + ((int(end.x) / 2) * cell_h + (int(end.x) / 2) * wall_h) + cell_h / 2;
+            line(start_x, start_y, end_x, end_y);
+        }
+    }
     // 绘制两列图例
     int legend_x1 = 660; // 第一列x
     int legend_x2 = 740; // 第二列x
@@ -274,4 +303,9 @@ void GameScene::on_update_right(int delta) {
 void GameScene::on_input_right(const ExMessage& message) {
     path.on_input(message);
     automatic.on_input(message);
+}
+
+void load()
+{
+
 }

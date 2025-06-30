@@ -86,8 +86,15 @@ Exit::Exit(int x, int y, GameScene* scene) : Object(scene) {
     collision_box->set_enabled(true);
     collision_box->set_position(Vector2(real_pos.x + OBJECT_SIZE / 2, real_pos.y + OBJECT_SIZE / 2));
     collision_box->set_size(Vector2(OBJECT_SIZE, OBJECT_SIZE));
-    collision_box->set_layer_dst(CollisionLayer::Role);
-    collision_box->set_layer_src(CollisionLayer::None);
+    collision_box->set_layer_dst(CollisionLayer::None);
+    collision_box->set_layer_src(CollisionLayer::OOO);
+    collision_box->set_on_collide([&]() {
+        collision_box->set_enabled(false);
+        image.set_image("path");
+        game_scene->map[logic_pos.y][logic_pos.x] = Content::none;
+		MessageBox(nullptr, L"恭喜你！成功走出迷宫", L"胜利", MB_OK | MB_ICONINFORMATION);
+        SceneManager::instance()->switch_to(SceneManager::SceneType::Hello);
+		});
     image.set_image("exit");
     image.set_position(real_pos);
     image.set_size(Vector2(OBJECT_SIZE, OBJECT_SIZE));
@@ -144,8 +151,9 @@ Boss::Boss(int x, int y, GameScene* scene) : Object(scene) {
     collision_box->set_layer_src(CollisionLayer::OOO);
     collision_box->set_on_collide([&]() {
         collision_box->set_enabled(false);
-        game_scene->map[logic_pos.y][logic_pos.x] = Content::none;
         image.set_image("path");
+        game_scene->map[logic_pos.y][logic_pos.x] = Content::none;
+        game_scene->is_skip_enter = true;
         SceneManager::instance()->switch_to(SceneManager::SceneType::Boss);
         });
     image.set_image("path");

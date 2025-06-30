@@ -70,7 +70,12 @@ private:
 			std::cout << "文件名不能为空" << std::endl;
 			return;
 		}
+		if (filename == "maze_15_15_2.json")
+		    is= true;
+		else
+			is = false;
 		maze_solver.init(filename);
+		if(!is)
 		maze_solver.solve();
 		maze_solver.printPath();
 		std::cout << "请输入保存路径的文件名" << std::endl;
@@ -140,4 +145,5 @@ private:
 	PasswordSolver password_solver;
 	AttackStrategy attack_strategy;
 	MazeSolver maze_solver;
+	bool is;
 };

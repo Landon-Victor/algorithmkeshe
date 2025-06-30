@@ -112,6 +112,11 @@ public:
     {
 		is_auto_moving = is_auto_moving ? false : true;
 	}
+    void clear_auto_move()
+    {
+        is_auto_moving = false;
+        auto_move_index = 1;
+	}
     void set_path(const std::vector<Vector2>& p)
     {
         path = p;

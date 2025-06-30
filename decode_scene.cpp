@@ -13,6 +13,8 @@ void DecodeScene::generate_question() {
 }
 
 void DecodeScene::on_enter() {
+    g->player.clear_move();
+    g->current_scene = 1;
     try_history.clear();
     try_times = 0;
     generate_question();
@@ -27,8 +29,8 @@ void DecodeScene::on_enter() {
                 try_history.push_back(info);
                 try_times++;
                 textbox.Clear();
-                g->player.clear_move();
-				SceneManager::instance()->switch_to(SceneManager::SceneType::Game);
+                g->current_scene = 0;
+                SceneManager::instance()->switch_to(SceneManager::SceneType::Game);
             }
             else {
                 g->cur_money--;

@@ -20,6 +20,7 @@ class GameScene : public Scene
     friend class Start;
     friend class Player;
     friend class DecodeScene;
+    friend class BossScene;
 public:
     GameScene();
     ~GameScene() = default;
@@ -28,13 +29,12 @@ public:
     void on_render(const Camera& camera) override;
     void on_input(const ExMessage& message) override;
     void on_update(int delta) override;
-
 private:
     void little_on_render();
     void on_render_right();
 	void on_input_right(const ExMessage& message);
 	void on_update_right(int delta);
-
+    void load();
     int size = 8;
     Map map;
     std::vector<Object*> objects;
@@ -49,4 +49,7 @@ private:
 	Button path;
     bool is_path = false;
 	bool is_skip_enter = false;
+	bool is_auto_decode = false;
+	bool is_auto_attack = false;
+	int current_scene = 0; // 0->game, 1->decode, 2->boss
 };

@@ -19,7 +19,7 @@ SceneManager::SceneManager()
 {
 	hello_scene = new HelloScene();
 	game_scene = new GameScene();
-	boss_scene = new BossScene();
+	boss_scene = new BossScene(game_scene);
     decode_scene = new DecodeScene(game_scene);
 	current_scene = hello_scene;
 	current_scene->on_enter();
